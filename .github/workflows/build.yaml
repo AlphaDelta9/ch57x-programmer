@@ -38,13 +38,6 @@ jobs:
       - name: Build project
         run: npm run build-prod
 
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
       - name: Setup GitHub Pages
         uses: actions/configure-pages@v4
 
@@ -55,6 +48,13 @@ jobs:
           # Ganti './dist' jika folder output kamu berbeda (misal: './build' atau './out')
           path: './dist'
 
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
       # Job deploy hanya bertugas menerima artifact dan mempublikasikannya
       - name: Deploy to GitHub Pages
         id: deployment
