@@ -99,7 +99,7 @@ module.exports = (env, argv) => {
         },
       }),
       new HtmlWebpackPlugin({
-        title: "ch57x keyboard tool";,
+        title: "ch57x keyboard tool",
         filename: `index.html`,
         template: "index.template.html",
       }),
