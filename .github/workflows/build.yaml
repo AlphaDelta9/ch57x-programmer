@@ -1,26 +1,40 @@
-name: Build
+name: Build and Deploy
 
 on:
   push:
     branches: [main]
   workflow_dispatch:
 
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@v4
+
       - name: Setup Node.js
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v4
         with:
           node-version: "lts/*"
           cache: "npm"
+
       - name: Install dependencies
         run: npm ci
+
       - name: Check formatting
         run: npm run format-check
+
       - name: Lint
         run: npm run lint
+
       - name: Build project
         run: npm run build-prod
 
@@ -34,9 +48,14 @@ jobs:
       - name: Setup GitHub Pages
         uses: actions/configure-pages@v4
 
+      # Step upload artifact HARUS berada di job build
       - name: Upload Build Artifact
         uses: actions/upload-pages-artifact@v3
-        
+        with:
+          # Ganti './dist' jika folder output kamu berbeda (misal: './build' atau './out')
+          path: './dist'
+
+      # Job deploy hanya bertugas menerima artifact dan mempublikasikannya
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
