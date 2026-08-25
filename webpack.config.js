@@ -9,9 +9,6 @@ const {
   reactCompilerLoader,
 } = require("react-compiler-webpack");
 
-const PROJECT = "cheese-tax";
-const PAGE_TITLE = "ch57x keyboard tool";
-
 module.exports = (env, argv) => {
   const isProduction = argv.mode === "production";
   const distPath = path.join(__dirname, "dist");
@@ -22,7 +19,7 @@ module.exports = (env, argv) => {
     output: {
       clean: true,
       path: distPath,
-      filename: `${PROJECT}.[name].[contenthash].js`,
+      filename: `index.[name].[contenthash].js`,
     },
 
     devServer: {
@@ -50,7 +47,7 @@ module.exports = (env, argv) => {
           test: /\.(woff|woff2|eot|ttf|otf)$/i,
           type: "asset/resource",
           generator: {
-            filename: `${PROJECT}/fonts/[name].[contenthash][ext]`,
+            filename: `index/fonts/[name].[contenthash][ext]`,
           },
         },
         {
@@ -102,14 +99,14 @@ module.exports = (env, argv) => {
         },
       }),
       new HtmlWebpackPlugin({
-        title: PAGE_TITLE,
-        filename: `${PROJECT}.html`,
+        title: "ch57x keyboard tool";,
+        filename: `index.html`,
         template: "index.template.html",
       }),
       ...(isProduction
         ? [
             new MiniCssExtractPlugin({
-              filename: `${PROJECT}.[contenthash].css`,
+              filename: `index.[contenthash].css`,
             }),
           ]
         : []),
